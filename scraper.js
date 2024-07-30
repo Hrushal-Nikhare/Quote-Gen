@@ -23,10 +23,11 @@ const getQuotes = async () => {
 		// 	quoteAuthors.push(quoteAuthor)
 		// });
 
-        $('#bodycontainer > div.mainContentContainer > div.mainContent > div.mainContentFloat > div.leftContainer > div.quotes > div > div.quoteDetails > div.quoteText').each((_idx, el) => {
-			let quoteContent = $(el).text();
+        $('#bodycontainer > div.mainContentContainer > div.mainContent > div.mainContentFloat > div.leftContainer > div.quotes > div > div.quoteDetails > div.quoteText > :eq(1)').each((_idx, el) => {
+			let quoteContent = $(el).nextAll().text();
             quoteContent = quoteContent.replace(/\n/g, '').replace(/\s\s+/g, '').replace(/,/g, '');
 			quoteContents.push(quoteContent)
+            // console.log(el);
 		});
 
 		
