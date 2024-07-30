@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quotes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .Quote {
+            display: block;
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-left: 5px solid #007BFF;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .btn {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="Quote">Click the button to get a random quote!</span>
+        <br>
+        <button class="btn">Get Quote</button>
+    </div>
+    <script>
+        console.log('All quotes are from https://goodreads.com/quotes');
+        const quote = document.querySelector('.Quote');
+        const btn = document.querySelector('.btn');
+        const url = `${window.location}quotes/random`;
+        btn.addEventListener('click', () => {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    quote.textContent = data;
+                    console.log(data);
+                });
+        });
+    </script>
+</body>
+</html>
