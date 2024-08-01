@@ -3,6 +3,10 @@ const fs = require("fs");
 const { get } = require("http");
 const path = require("path");
 
+require('dotenv').config()
+
+const Unsplash_Key = process.env.UNSPLASH_KEY;
+
 function getRandomItem(arr) {
     // Generate a random index
     const randomIndex = Math.floor(Math.random() * arr.length);
@@ -29,6 +33,22 @@ app.get("/quotes/:category", (req, res) => {
         }
         const obj = JSON.parse(data);
         res.send(JSON.stringify(getRandomItem(obj)));
+    });
+});
+
+app.get("/image",(req,res)=>{
+    fetch(`https://api.unsplash.com/search/photos?client_id=${Unsplash_Key}&query=nature&orientation=landscape&per_page=30`)
+    .then(response => response.json())
+    .then(data => {
+        // console.log(data);
+
+        // res.send(JSON.stringify(data.results[0].urls.regular));
+        // console.log(data.results);
+        // data.results.forEach(element => {
+        //     console.log(element.urls.regular);
+        // });
+        // console.log(getRandomItem(data.results).urls.regular); // WORKS!!
+        res.send(JSON.stringify(getRandomItem(data.results).urls.regular));
     });
 });
 

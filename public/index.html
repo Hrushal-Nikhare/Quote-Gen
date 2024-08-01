@@ -46,7 +46,7 @@
         }
     </style>
 </head>
-<body>
+<body id="Smth">
     <div class="container">
         <span class="Quote">Click the button to get a random quote!</span>
         <br>
@@ -57,6 +57,7 @@
         const quote = document.querySelector('.Quote');
         const btn = document.querySelector('.btn');
         const url = `${window.location}quotes/random`;
+        const image_url = `${window.location}image/`;
         btn.addEventListener('click', () => {
             fetch(url)
                 .then(response => response.json())
@@ -64,6 +65,10 @@
                     quote.textContent = data;
                     console.log(data);
                 });
+            fetch(image_url)
+                // .then(response => document.getElementById('Smth').style.backgroundImage = `url(${response.url})`) // This is not working bc its a url param
+                // .then(response => console.log(response.body)); // This is not working either it says ReadableStream
+                .then(response => console.log(response));
         });
     </script>
 </body>
