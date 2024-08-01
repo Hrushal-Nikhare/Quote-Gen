@@ -2,6 +2,8 @@ const express = require("express");
 const fs = require("fs");
 const { get } = require("http");
 const path = require("path");
+const rateLimit = require('express-rate-limit');
+
 
 require('dotenv').config()
 
@@ -16,6 +18,18 @@ function getRandomItem(arr) {
 }
 
 const app = express();
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    validate: {
+		xForwardedForHeader: false,
+        ip: true,
+		default: true,
+	},
+    });
+
+app.use(limiter);
 
 allCategories = [ 'Home', 'Love', 'Life', 'Inspirational', 'Humor', 'Philosophy', 'Truth', 'Wisdom', 'Friendship', 'Happiness', 'Hope', 'Life Lessons', 'Romance', 'Death', 'Writing', 'Success', 'Motivational', 'Poetry' ];
 
@@ -37,7 +51,8 @@ app.get("/quotes/:category", (req, res) => {
 });
 
 app.get("/image",(req,res)=>{
-    fetch(`https://api.unsplash.com/search/photos?client_id=${Unsplash_Key}&query=nature&orientation=landscape&per_page=30`)
+    let options = ('nature','landscape','portrait','people','animals','food','fashion','architecture','travel','technology','business','health','sports','music');
+    fetch(`https://api.unsplash.com/search/photos?client_id=${Unsplash_Key}&query=${getRandomItem(options)}&orientation=landscape&per_page=30`)
     .then(response => response.json())
     .then(data => {
         // console.log(data);
@@ -47,8 +62,15 @@ app.get("/image",(req,res)=>{
         // data.results.forEach(element => {
         //     console.log(element.urls.regular);
         // });
-        // console.log(getRandomItem(data.results).urls.regular); // WORKS!!
-        res.send(JSON.stringify(getRandomItem(data.results).urls.regular));
+        // console.log(getRandomItem(data.results)); // WORKS!!
+        // res.send(JSON.stringify(getRandomItem(data.results).urls.full)); // too high rez takes time
+        let randoimg = getRandomItem(data.results)
+        // console.log(randoimg); // DEBUG
+        let the_img = randoimg.urls.regular;
+        let coloooors = randoimg.color;
+        res.send(JSON.stringify({the_img , coloooors})); // only image
+        // res.send(JSON.stringify(getRandomItem(data.results).urls.small)); // fastest but really bad quality
+
     });
 });
 

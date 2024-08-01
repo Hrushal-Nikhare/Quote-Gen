@@ -9,7 +9,7 @@
     "UpdateQuotes": "node scraper.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Hrushal Nikhare",
   "license": "ISC",
   "description": "",
   "dependencies": {
